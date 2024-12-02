@@ -2,7 +2,8 @@ package fr.voxi.administration;
 import java.util.ArrayList;
 
 public class AppAdminVoxi {
-	
+
+
 	public static void main(String[] args) {
 		
 		//1. Déclarer et initialiser la variable utilisateurs. // 
@@ -68,7 +69,7 @@ public class AppAdminVoxi {
 		
 		if ( utilisateurs.get(0).seConnecter( "s.zaki@gns.fr" , "azerty") == true ){
 			
-			System.out.println( " connecter " ) ;
+			System.out.println( " L'auditrice est connectée " ) ;
 			
 		}else {
 			
@@ -80,20 +81,63 @@ public class AppAdminVoxi {
 		
 		for( Utilisateur user : utilisateurs ) {
 			
-			if ( user.getEtat() == 2 ) {
+			if ( user instanceof Membre ) {
 				
-				user.seConnecter() ; 
+				user.seConnecter( user.getEmail()  , user.getMdp() ) ; 
 				
-				System.out.println( user.getNom() + "     " +user.getEtat()  ) ; 
+				System.out.println( "L'utilsateur" + "    " + user.getNom() + "    " +  " est connecter :  " + user.getEtat() ) ;
 			
+			}else {
+				
+				user.seConnecter((( Moderateur)user).getLogin() , user.getMdp()); 
+				
+				System.out.println( "L'utilsateur" + "    " + user.getNom() + "    " +  " est connecter  : " + user.getEtat() ) ;
+				
 			}
 		}
 
 		//8. Écrire les instructions relatives au scénario suivant : // 
 		
+		Utilisateur admin1 = new Moderateur("LEBRETON" , "Jules", "j.lebreton@gmail.com",  "azerty" , Utilisateur.DECONNECTE , "jbreton", 33 ) ;
+		utilisateurs.add(admin1) ;
+		
+		Utilisateur user1 = new Membre("CAMOIT", "Alexis" , "a.camoit@gns.fr" , "azerty" , Utilisateur.DECONNECTE, true ) ;
+		utilisateurs.add(user1) ;
+		
+		((Moderateur)admin1).debloquer((Membre)user1) ;
+		
+		System.out.println("L'auditeur Alexis CAMOIT vient d'être débloquer .");
+		System.out.println(user1.seConnecter("a.camoit@gns.fr", "azerty"));
+		
 		// 9. Écrire les instructions relatives au scénario suivant : //
+			
+		Utilisateur admin2 = new Moderateur("ESSAMAMI", "Hamza", "hamza.mami@gmail.com" , "azerty" , Utilisateur.DECONNECTE, "hessa", 8 ) ;
+		utilisateurs.add(admin2) ;
+		
+		Utilisateur user2 = new Membre("ZAKI", "Selma" , "s.zaki@gns.fr" , "azerty" , Utilisateur.DECONNECTE, false ) ;
+		utilisateurs.add(user2) ;
+		
+		((Moderateur)admin2).bloquer((Membre)user2);
+		System.out.println("L'auditeur Selma ZAKI vient d'être bloquer .");
+		System.out.println(user1.seConnecter("s.zaki@gns.fr", "azerty"));
+		
 		
 		// 10. Écrire les instructions relatives au traitement suivant : //
+		
+		Utilisateur admin3 = new Moderateur("BA", "Béchir", "bechir.ba@gmail.com" , "azerty" , Utilisateur.CONNECTE, "bba", 103 ) ;
+		utilisateurs.add(admin3) ;
+		
+		Utilisateur user3 = new Membre("KARIM", "Lamia" , "l.karim@gns.fr" , "azerty" , Utilisateur.CONNECTE, false) ; 
+		utilisateurs.add(user3) ;
+		
+		System.out.println( ((Moderateur)admin3).getNbAlertesEnvoyees() ) ;
+		
+		((Moderateur)admin3).alerter((Membre)user3, " Vos propos sont injurieux");	
+		
+		System.out.println(  ((Moderateur)admin3).getNbAlertesEnvoyees()  ) ;
+		
+		
+		
 
 
 		

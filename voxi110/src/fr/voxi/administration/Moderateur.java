@@ -28,9 +28,10 @@ public class Moderateur extends Utilisateur implements Administrateur {
 		this.nbAlertesEnvoyees = nbAlertesEnvoyees;
 	}
 	
-	public void alerter( Membre membre , String message ) {
-		
-		nbAlertesEnvoyees = nbAlertesEnvoyees ++ ; 	
+	public String alerter( Membre membre , String message ) {
+		membre.visuNotif(message);
+		this.nbAlertesEnvoyees++ ;
+		return "Signalement fait à : " + membre + " Message : " + message ;
 	}
 
 	@Override
@@ -40,13 +41,14 @@ public class Moderateur extends Utilisateur implements Administrateur {
 
 	@Override
 	public void bloquer(Membre membre) {
-		// TODO Auto-generated method stub
 		
+		membre.setBloque(true);
 	}
 
 	@Override
 	public void debloquer(Membre membre) {
-		// TODO Auto-generated method stub
+		
+		membre.setBloque(false);
 		
 	}
 
